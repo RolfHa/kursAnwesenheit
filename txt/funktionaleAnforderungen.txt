@@ -1,0 +1,29 @@
+uebersichtKurse:
+
+onload: Kurse des Dozenten auslesen
+Kurse in select-option-form bringen
+Submitform erstellen
+logout-Knopf erstellen (oben)
+
+ansichtDozenten:
+
+onload: passend zum Kurs, dem aktuellen Monat, die Daten pro
+Teilnehmer und Tag auslesen
+Anzahl der Monatstage ausgeben, Nichtunterrichtstage werden grau unterlegt
+Tage werden abwechselnd farbig unterlegt
+Form mit speichern- und reset-Knopf einbauen
+2 Knöpfe für Monat vorwärts, Monat rückwärts
+logout-Knopf erstellen (oben)
+div für Fehlermeldung einbauen
+
+onclick: Monat vorwärts, bzw. Monat rückwärts wie onload, nur mit gewünschtem Monat
+gewünschter Monat muss im Bereich des Kurses liegen, muss beim Kursanlegen gespeichert werden
+
+submit: alle Daten aus input-text-Felder übertragen, einschl. Monat, Jahr, Kurs, Dozent
+validieren ob x, o, n oder Leerstring übertragen wurden, im Fehlerfall ansichtDozenten mit Fehlermeldung
+speichern: siehe Zeichnung im TagesChat
+im Fehlerfall Fehlermeldung ausgeben
+deim Funktionieren: Seite neu laden -> onload
+wird nicht programmiert: wenn mehrere User aktiv sind, wird unmittelbar jede Aktion den anderen User angezeigt
+
+

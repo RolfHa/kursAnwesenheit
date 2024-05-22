@@ -1,0 +1,6 @@
+für Dozenten:
+Die Anwesenheit (präsent, online, fehlt) muss der Dozent jeden Tag dokumentieren. Dies soll später zentral durch das Sekretariat
+überprüft und ergänzt werden können (gehört nicht zum Projekt)
+Nach dem Login wird monatsweise der aktuelle Kurs des Dozenten angezeigt. Der Dozent kann die vorgegebenen Kürzel oder Leerstring
+für jeden Tag und jeden Teilnehmer eingeben und ändern. Es kann monatsweise vor- und zurück geblättert werden.
+Es ist eine Desktop-Intranetanwendung mit CRUD-Funktionalitäten.
