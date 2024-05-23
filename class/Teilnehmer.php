@@ -2,19 +2,25 @@
 
 class Teilnehmer extends User
 {
-    private int $user_id;
+    private int $t_id;
     private string $fachrichtung;
     private string $team;
 
     /**
-     * @param int $user_id
+     * @param int $id
+     * @param string $fname
+     * @param string $lanme
+     * @param string $pwhash
+     * @param string $email
+     * @param string $role
+     * @param int $t_id
      * @param string $fachrichtung
      * @param string $team
      */
-    public function __construct(int $id, string $fname, string $lanme, string $pwhash, string $email, string $role,int $user_id, string $fachrichtung, string $team)
+    public function __construct(int $id, string $fname, string $lanme, string $pwhash, string $email, string $role,int $t_id, string $fachrichtung, string $team)
     {
         parent::__construct($id,  $fname,  $lanme,  $pwhash,  $email,  $role);
-        $this->user_id = $user_id;
+        $this->t_id = $t_id;
         $this->fachrichtung = $fachrichtung;
         $this->team = $team;
     }
@@ -45,7 +51,7 @@ class Teilnehmer extends User
         $stmt->bindParam(':id',$id);
         $stmt->execute();
         $result = $stmt->fetch(2);
-        return new Teilnehmer($result['id'],$result['fname'],$result['lname'],$result['pwhash'],$result['email'],$result['role'],$result['user_id'],$result['fachrichtung'],$result['role']);
+        return new Teilnehmer($result['user_id'],$result['fname'],$result['lname'],$result['pwhash'],$result['email'],$result['role'],$result['id'],$result['fachrichtung'],$result['role']);
     }
 
     /**

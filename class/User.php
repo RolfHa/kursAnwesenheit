@@ -93,5 +93,13 @@ class User
         return $this->lname;
     }
 
+    /**
+     * @return string
+     */
+    public function getFullName(): string
+    {
+        return $this->getFname() . ' ' . $this->getLname();
+    }
+
 
 }

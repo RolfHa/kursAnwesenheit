@@ -7,7 +7,12 @@ require_once '../vendor/autoload.php';
 $faker = Faker\Factory::create('de_DE');
 $faker->seed(100);
 
-
+for ($i = 0; $i < 5; $i++) {
+    $fname = $faker->firstName();
+    $lname = $faker->lastName();
+    $email = $faker->email();
+    User::create($fname, $lname, '123', $email, 'dozent');
+}
 
 $fachrichung = 'AE';
 for ($j = 0; $j < 30; $j++) {
@@ -21,12 +26,7 @@ for ($j = 0; $j < 30; $j++) {
     $email = $faker->email();
     Teilnehmer::createteilnehmer($fname, $lname, '123', $email, 'teilnehmer', $fachrichung, '230619');
 }
-for ($i = 0; $i < 5; $i++) {
-    $fname = $faker->firstName();
-    $lname = $faker->lastName();
-    $email = $faker->email();
-    User::create($fname, $lname, '123', $email, 'dozent');
-}
+
 $berlinerFeiertage = [
     "Neujahrstag" => "2024-01-01",
     "Internationaler Frauentag" => "2024-03-08",
