@@ -81,24 +81,36 @@ class Anwesenheit
     /**
      * @param int $id
      * @param int $month
-     * @return Anwesenheit[]
-
+     * @param int $year
+     * @return Anwesenheit[]|null
      */
-    public static function findByMonthTId(int $id, int $month)
+    public static function findByMonthTId(int $id, int $month, int $year = 2024):?array
     {
         $con = self::dbcon();
-        $sql = 'SELECT * FROM anwesenheit where teilnehmer_id=:id and month(datum) = :month';
+        $sql = 'SELECT * FROM anwesenheit where teilnehmer_id=:id and month(datum) = :month and year(datum) = :year';
         $stmt = $con->prepare($sql);
-        $stmt->execute([':id'=>$id,':month'=>$month]);
+        $stmt->execute([':id'=>$id,':month'=>$month, ':year'=>$year]);
         $results = $stmt->fetchAll(2);
         $anwesen = [];
         foreach ($results as $result) {
             $anwesen[]= new Anwesenheit($result["id"],$result['dozenten_id'],$result['teilnehmer_id'],$result['datum'],$result['status']);
-
+        }
+        if (!self::checkDaysOfMonth($year, $month, count($anwesen))){
+            echo "Datenbankeinträge für teilnehmer mit id: $id für den Monat: $month und das Jahe: $year sind nicht korrekt";
+            die();
         }
         return $anwesen;
     }
-
+// brauchen Methode, die Tage des Monats überprüft
+public static function checkDaysOfMonth(int $year, int $month, int $amountDays): bool{
+        $datum = DateTime::createFromFormat('Y-m-d', "$year-$month-01");
+        //print_r($datum);
+        $daysInMonth = $datum->format('t'); // gibt Anzahl der Tage des Monats als string aus
+        if ($daysInMonth == $amountDays) {
+            return true;
+        }
+        return false;
+}
     /**
      * @return string
      */
@@ -115,6 +127,9 @@ class Anwesenheit
         return $this->datum->format('d:m:y');
     }
 
+    /**
+     * @return DateTime
+     */
     public function getDatumObj()
     {
         return $this->datum;
