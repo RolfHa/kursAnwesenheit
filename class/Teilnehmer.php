@@ -17,30 +17,30 @@ class Teilnehmer extends User
      * @param string $fachrichtung
      * @param string $team
      */
-    public function __construct(int $id, string $fname, string $lanme, string $pwhash, string $email, string $role,int $t_id, string $fachrichtung, string $team)
+    public function __construct(int $id, string $fname, string $lanme, string $pwhash, string $email, string $role, int $t_id, string $fachrichtung, string $team)
     {
-        parent::__construct($id,  $fname,  $lanme,  $pwhash,  $email,  $role);
+        parent::__construct($id, $fname, $lanme, $pwhash, $email, $role);
         $this->t_id = $t_id;
         $this->fachrichtung = $fachrichtung;
         $this->team = $team;
     }
 
-    public static function createteilnehmer(string $fname, string $lname, string $password, string $email, string $role, string $fachrichtung, string $team):Teilnehmer
+    public static function createteilnehmer(string $fname, string $lname, string $password, string $email, string $role, string $fachrichtung, string $team): Teilnehmer
     {
-        $user = User::create($fname,$lname,$password,$email,$role);
+        $user = User::create($fname, $lname, $password, $email, $role);
         $con = parent::dbcon();
         $sql = 'INSERT INTO teilnehmer ( user_id, fachrichtung, team) values (:userid, :fachrichtung, :team) ';
         $stmt = $con->prepare($sql);
         $user_id = $user->getId();
-        $stmt->bindParam(':userid',$user_id);
-        $stmt->bindParam(':fachrichtung',$fachrichtung);
-        $stmt->bindParam(':team',$team);
+        $stmt->bindParam(':userid', $user_id);
+        $stmt->bindParam(':fachrichtung', $fachrichtung);
+        $stmt->bindParam(':team', $team);
         $stmt->execute();
         return self::findTeilById($con->lastInsertId());
 
     }
 
-    public static function findTeilById(int $id):Teilnehmer
+    public static function findTeilById(int $id): Teilnehmer
     {
         $con = parent::dbcon();
         $sql = 'SELECT u.fname, u.lname, u.email,u.pwhash, u.role, t.fachrichtung, t.team, t.user_id, t.id
@@ -48,31 +48,30 @@ class Teilnehmer extends User
                 join teilnehmer t on u.id = t.user_id
                 where t.id =:id';
         $stmt = $con->prepare($sql);
-        $stmt->bindParam(':id',$id);
+        $stmt->bindParam(':id', $id);
         $stmt->execute();
         $result = $stmt->fetch(2);
-        return new Teilnehmer($result['user_id'],$result['fname'],$result['lname'],$result['pwhash'],$result['email'],$result['role'],$result['id'],$result['fachrichtung'],$result['role']);
+        return new Teilnehmer($result['user_id'], $result['fname'], $result['lname'], $result['pwhash'], $result['email'], $result['role'], $result['id'], $result['fachrichtung'], $result['role']);
     }
 
     /**
      * @return Teilnehmer[]
      */
 
-    public static function findAll()
+    public static function findAll(): array
     {
-        $con = self::dbcon();
-        $sql = 'SELECT id FROM user where role = "teilnehmer"';
+        $con = parent::dbcon();
+        $sql = 'SELECT id FROM teilnehmer';
         $stmt = $con->prepare($sql);
 //        $stmt->bindParam(':teilnehmer', $teilnehmer);
         $stmt->execute();
         $results = $stmt->fetchAll(2);
         $teilnehmer = [];
         foreach ($results as $result) {
-            $teilnehmer[]= self::findById($result['id']);
+            $teilnehmer[] = self::findTeilById($result['id']);
         }
         return $teilnehmer;
     }
-
 
 
 }

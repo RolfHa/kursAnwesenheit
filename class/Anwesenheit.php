@@ -135,7 +135,20 @@ public static function checkDaysOfMonth(int $year, int $month, int $amountDays):
         return $this->datum;
     }
 
+    public static function findByMonth(int $monthId) : array
+    {
+        $con = self::dbcon();
+        $sql = 'SELECT * FROM anwesenheit where month(datum) = :monthId order by teilnehmer_id, datum';
+        $stmt = $con->prepare($sql);
+        $stmt->execute([':monthId'=>$monthId]);
+        $results = $stmt->fetchAll(2);
+        $anwesen = [];
+        foreach ($results as $result) {
+            $anwesen[]= new Anwesenheit($result["id"],$result['dozenten_id'],$result['teilnehmer_id'],$result['datum'],$result['status']);
+        }
+        return $anwesen;
 
+    }
 
 
 
