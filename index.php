@@ -27,11 +27,12 @@ echo '<pre>';
 print_r($dtNew);
 echo '</pre>';
 
-$year = $dt->format('Y');
-$month = $dt->format('m');
+// neuer (angefragter) Monat
+$year = $dtNew->format('Y');
+$month = $dtNew->format('m');
 
 
-$monthAnwesenheiten = Anwesenheit::findByMonth($month);
+$monthAnwesenheiten = Anwesenheit::findByMonth($month, $year);
 // Anzahl der Tage im Monat finden
 $letzterMonatsTag = DateTime::createFromFormat('Y-m', "$year-$month")->format('t');
 $germanMonthName = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];

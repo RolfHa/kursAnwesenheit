@@ -135,12 +135,12 @@ public static function checkDaysOfMonth(int $year, int $month, int $amountDays):
         return $this->datum;
     }
 
-    public static function findByMonth(int $monthId) : array
+    public static function findByMonth(int $monthId, int $year = 2024) : array
     {
         $con = self::dbcon();
-        $sql = 'SELECT * FROM anwesenheit where month(datum) = :monthId order by teilnehmer_id, datum';
+        $sql = 'SELECT * FROM anwesenheit where month(datum) = :monthId and year(datum) = :year order by teilnehmer_id, datum';
         $stmt = $con->prepare($sql);
-        $stmt->execute([':monthId'=>$monthId]);
+        $stmt->execute([':monthId'=>$monthId, ':year'=>$year]);
         $results = $stmt->fetchAll(2);
         $anwesen = [];
         foreach ($results as $result) {
