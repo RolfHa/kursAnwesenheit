@@ -16,6 +16,7 @@
 </head>
 <body>
 <div id="errormsg">Sorry, es ist ein Fehler aufgetreten, der Admin ist informiert.</div>
+
 <table>
     <tr>
         <th><a href="index.php?action=previousMonth&month=<?php echo $month; ?>&year=<?php echo $year; ?>"><button><=</button></a> <?php echo $germanMonthName[$month - 1] . " $year"; ?> <a href="index.php?action=nextMonth&month=<?php echo $month; ?>&year=<?php echo $year; ?>"><button>=></button></a></th>
