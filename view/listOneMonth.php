@@ -6,22 +6,9 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Anwesenheiten</title>
-    <style>
-        #errormsg{
-            color: red;
-            font-size: 20px;
-            text-align: center;
-        }
-    </style>
+
 </head>
 <body>
-bin in branch tryCatch
-bin in branch tryCatch
-bin in branch tryCatch
-bin in branch tryCatch
-bin in branch tryCatch
-bin in branch tryCatch
-<div id="errormsg">Sorry, es ist ein Fehler aufgetreten, der Admin ist informiert.</div>
 <table>
     <tr>
         <th><a href="index.php?action=previousMonth&month=<?php echo $month; ?>&year=<?php echo $year; ?>"><button><=</button></a> <?php echo $germanMonthName[$month - 1] . " $year"; ?> <a href="index.php?action=nextMonth&month=<?php echo $month; ?>&year=<?php echo $year; ?>"><button>=></button></a></th>

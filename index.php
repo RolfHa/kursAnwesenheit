@@ -18,9 +18,9 @@ spl_autoload_register(function ($class) {
     include 'class/' . $class . '.php';
 });
 
-if ($action === 'nextMonth'){
+if ($action === 'nextMonth') {
     $dtNew->add(new DateInterval('P1M'));
-} elseif ($action === 'previousMonth'){
+} elseif ($action === 'previousMonth') {
     $dtNew->sub(new DateInterval('P1M'));
 }
 echo '<pre>';
@@ -31,12 +31,17 @@ echo '</pre>';
 $year = $dtNew->format('Y');
 $month = $dtNew->format('m');
 
+try {
+    $monthAnwesenheiten = Anwesenheit::findByMonth($month, $year);
+    // Anzahl der Tage im Monat finden
+    $letzterMonatsTag = DateTime::createFromFormat('Y-m', "$year-$month")->format('t');
+    $germanMonthName = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+    $tns = Teilnehmer::findAll();
+    $view = 'listOneMonth';
+} catch (Exception $exception) {
+    $errormsg = $exception->getMessage();
+    $view = 'error';
+}
 
-$monthAnwesenheiten = Anwesenheit::findByMonth($month, $year);
-// Anzahl der Tage im Monat finden
-$letzterMonatsTag = DateTime::createFromFormat('Y-m', "$year-$month")->format('t');
-$germanMonthName = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
-$tns = Teilnehmer::findAll();
 
-
-include 'view/listOneMonth.php';
+include 'view/' . $view . '.php';
