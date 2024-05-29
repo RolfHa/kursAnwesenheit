@@ -127,8 +127,7 @@ class Anwesenheit
             $anwesen[]= new Anwesenheit($result["id"],$result['dozenten_id'],$result['teilnehmer_id'],$result['datum'],$result['status']);
         }
         if (!self::checkDaysOfMonth($year, $month, count($anwesen))){
-            echo "Datenbankeinträge für teilnehmer mit id: $id für den Monat: $month und das Jahr: $year sind nicht korrekt";
-            die();
+            throw new Exception("Datenbankeinträge für teilnehmer mit id: $id für den Monat: $month und das Jahr: $year sind nicht korrekt");
         }
         return $anwesen;
     }
