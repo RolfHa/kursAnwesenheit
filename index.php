@@ -5,9 +5,12 @@ $dt = new DateTime();
 $action = $_REQUEST['action'] ?? ''; // REQUEST ist Kombi von GET und POST
 $year = $_GET['year'] ?? $dt->format('Y');
 $month = $_GET['month'] ?? $dt->format('m');
-$dtNew = DateTime::createFromFormat('Y-m-d', "$year-$month-1"); // Tag nötig, da 30. Feb beim Blättern Probleme macht
+$teilnehmerIds = $_POST['teilnehmerIds'] ?? [];
+$days = $_POST['days'] ?? []; // 2-dim $days[0] ist Anwesenheitsstati vom 1. Teilnehmer
 
 $userId = $_SESSION['userId'] ?? 3;
+
+$dtNew = DateTime::createFromFormat('Y-m-d', "$year-$month-1"); // Tag nötig, da 30. Feb beim Blättern Probleme macht
 
 echo '<pre>GET';
 print_r($_GET);
@@ -29,11 +32,12 @@ if ($action === 'nextMonth') {
     $dtNew->sub(new DateInterval('P1M'));
 } elseif ($action === 'update') {
     // Daten in Datenbank updaten
-
+    $tnAdb = new TeilnehmerAnwesenheiten(Teilnehmer::findTeilById($teilnehmerIds[0]), Anwesenheit::findByMonthTId($teilnehmerIds[0]));
+    echo '<pre>';
+    print_r($tnAdb);
+    echo '</pre>';
 }
-echo '<pre>';
-print_r($dtNew);
-echo '</pre>';
+
 
 // neuer (angefragter) Monat
 $year = $dtNew->format('Y');

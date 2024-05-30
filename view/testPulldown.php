@@ -56,13 +56,13 @@
             <tr>
                 <!-- Teilnehmername ausgeben -->
                 <td style="width: 300px;"><?php echo $tns[$j-1]->getFullName() . ' : '; ?></td>
-                <input type="hidden" name="teilnehmerId[]" value="<?php echo $tns[$j-1]->getId(); ?>">
+                <input type="hidden" name="teilnehmerIds[]" value="<?php echo $tns[$j-1]->getId(); ?>">
                 <?php
                 // Ausgabe aller Monatsdaten
                 for ($k = 0; $k < $letzterMonatsTag; $k++) {
                     ?>
                     <td>
-                        <select name="day<?php echo $j; ?>[]" tabindex="<?php echo $j + 31 * $k; ?>">
+                        <select name="days[<?php echo $j - 1;?>][]" tabindex="<?php echo $j + 31 * $k; ?>">
                             <option><?php echo $monthAnwesenheiten[($j-1) * $letzterMonatsTag + $k]->getStatus(); ?></option>
                             <option></option>
                             <option>x</option>
@@ -83,8 +83,8 @@
     </form>
     </tbody>
 </table>
-<div><input type="submit" id="testing" name="testing" onclick="document.getElementById('form1').submit(this)"></div>
-
+<div><input type="submit" id="testing" onclick="document.getElementById('form1').submit(this)"></div>
+<?php //echo $j; ?>
 
 </body>
 </html>

@@ -32,16 +32,16 @@ class Anwesenheit
      * @return PDO|null
      * @throws Exception
      */
-    public static function dbcon():?PDO
+    public static function dbcon(): ?PDO
     {
         try {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "anwesenheit";
-        return new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-        } catch (Exception $e){
-            throw new Exception($e->getMessage() . '<br>Datei: ' . $e->getFile() . '<br>Zeile: ' . $e->getLine() . '<br>Trace: '. $e->getTraceAsString());
+            $servername = "localhost";
+            $username = "root";
+            $password = "";
+            $dbname = "anwesenheit";
+            return new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage() . '<br>Datei: ' . $e->getFile() . '<br>Zeile: ' . $e->getLine() . '<br>Trace: ' . $e->getTraceAsString());
 
         }
 
@@ -55,7 +55,7 @@ class Anwesenheit
      * @return Anwesenheit|null
      * @throws Exception
      */
-    public static function create(int $dozenten_id, int $teilnehmer_id, string $datum, string $status):?Anwesenheit
+    public static function create(int $dozenten_id, int $teilnehmer_id, string $datum, string $status): ?Anwesenheit
     {
         $con = self::dbcon();
         $sql = "INSERT INTO anwesenheit (dozenten_id, teilnehmer_id, datum, status) VALUES (:dozenten_id, :teilnehmer_id, :datum, :status)";
@@ -63,24 +63,24 @@ class Anwesenheit
         try {
             $stmt->execute([':dozenten_id' => $dozenten_id, ':teilnehmer_id' => $teilnehmer_id, ':datum' => $datum, ':status' => $status]);
             return self::findById($con->lastInsertId());
-        } catch (Exception $e){
-            throw new Exception($e->getMessage() . '<br>Datei: ' . $e->getFile() . '<br>Zeile: ' . $e->getLine() . '<br>Trace: '. $e->getTraceAsString());
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage() . '<br>Datei: ' . $e->getFile() . '<br>Zeile: ' . $e->getLine() . '<br>Trace: ' . $e->getTraceAsString());
 
         }
 
     }
 
-    public static function findById(int $id):Anwesenheit
+    public static function findById(int $id): Anwesenheit
     {
         $con = self::dbcon();
         $sql = 'SELECT * FROM anwesenheit where id=:id';
         $stmt = $con->prepare($sql);
-        $stmt->execute([':id'=>$id]);
+        $stmt->execute([':id' => $id]);
         try {
             $result = $stmt->fetch(2);
             return new Anwesenheit($result["id"], $result['dozenten_id'], $result['teilnehmer_id'], $result['datum'], $result['status']);
-        } catch (Exception $e){
-            throw new Exception($e->getMessage() . '<br>Datei: ' . $e->getFile() . '<br>Zeile: ' . $e->getLine() . '<br>Trace: '. $e->getTraceAsString());
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage() . '<br>Datei: ' . $e->getFile() . '<br>Zeile: ' . $e->getLine() . '<br>Trace: ' . $e->getTraceAsString());
         }
     }
 
@@ -89,12 +89,12 @@ class Anwesenheit
      * @return array
      * @throws Exception
      */
-    public static function findByTeilId(int $id):array
+    public static function findByTeilId(int $id): array
     {
         $con = self::dbcon();
         $sql = 'SELECT * FROM anwesenheit where teilnehmer_id=:id';
         $stmt = $con->prepare($sql);
-        $stmt->execute([':id'=>$id]);
+        $stmt->execute([':id' => $id]);
         try {
             $results = $stmt->fetchAll(2);
             $anwesen = [];
@@ -103,8 +103,8 @@ class Anwesenheit
 
             }
             return $anwesen;
-        } catch (Exception $e){
-            throw new Exception($e->getMessage() . '<br>Datei: ' . $e->getFile() . '<br>Zeile: ' . $e->getLine() . '<br>Trace: '. $e->getTraceAsString());
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage() . '<br>Datei: ' . $e->getFile() . '<br>Zeile: ' . $e->getLine() . '<br>Trace: ' . $e->getTraceAsString());
 
         }
     }
@@ -115,24 +115,26 @@ class Anwesenheit
      * @param int $year
      * @return Anwesenheit[]|null
      */
-    public static function findByMonthTId(int $id, int $month, int $year = 2024):?array
+    public static function findByMonthTId(int $id, int $month, int $year = 2024): ?array
     {
         $con = self::dbcon();
         $sql = 'SELECT * FROM anwesenheit where teilnehmer_id=:id and month(datum) = :month and year(datum) = :year';
         $stmt = $con->prepare($sql);
-        $stmt->execute([':id'=>$id,':month'=>$month, ':year'=>$year]);
+        $stmt->execute([':id' => $id, ':month' => $month, ':year' => $year]);
         $results = $stmt->fetchAll(2);
         $anwesen = [];
         foreach ($results as $result) {
-            $anwesen[]= new Anwesenheit($result["id"],$result['dozenten_id'],$result['teilnehmer_id'],$result['datum'],$result['status']);
+            $anwesen[] = new Anwesenheit($result["id"], $result['dozenten_id'], $result['teilnehmer_id'], $result['datum'], $result['status']);
         }
-        if (!self::checkDaysOfMonth($year, $month, count($anwesen))){
+        if (!self::checkDaysOfMonth($year, $month, count($anwesen))) {
             throw new Exception("Datenbankeinträge für teilnehmer mit id: $id für den Monat: $month und das Jahr: $year sind nicht korrekt");
         }
         return $anwesen;
     }
+
 // brauchen Methode, die Tage des Monats überprüft
-public static function checkDaysOfMonth(int $year, int $month, int $amountDays): bool{
+    public static function checkDaysOfMonth(int $year, int $month, int $amountDays): bool
+    {
         $datum = DateTime::createFromFormat('Y-m-d', "$year-$month-01");
         //print_r($datum);
         $daysInMonth = $datum->format('t'); // gibt Anzahl der Tage des Monats als string aus
@@ -140,7 +142,8 @@ public static function checkDaysOfMonth(int $year, int $month, int $amountDays):
             return true;
         }
         return false;
-}
+    }
+
     /**
      * @return string
      */
@@ -152,7 +155,7 @@ public static function checkDaysOfMonth(int $year, int $month, int $amountDays):
     /**
      * @return string
      */
-    public function getDatum():string
+    public function getDatum(): string
     {
         return $this->datum->format('d:m:y');
     }
@@ -171,27 +174,24 @@ public static function checkDaysOfMonth(int $year, int $month, int $amountDays):
      * @return Anwesenheit[]|null
      * @throws Exception
      */
-    public static function findByMonth(int $monthId, int $year = 2024) : ?array
+    public static function findByMonth(int $monthId, int $year = 2024): ?array
     {
         try {
             $con = self::dbcon();
-        } catch (Exception $e){
+        } catch (Exception $e) {
             //echo 'dumm gelaufen';
-            throw new Exception($e->getMessage() . '<br>Datei: ' . $e->getFile() . '<br>Zeile: ' . $e->getLine() . '<br>Trace: '. $e->getTraceAsString());
+            throw new Exception($e->getMessage() . '<br>Datei: ' . $e->getFile() . '<br>Zeile: ' . $e->getLine() . '<br>Trace: ' . $e->getTraceAsString());
         }
         $sql = 'SELECT * FROM anwesenheit where month(datum) = :monthId and year(datum) = :year order by teilnehmer_id, datum';
         $stmt = $con->prepare($sql);
-        $stmt->execute([':monthId'=>$monthId, ':year'=>$year]);
+        $stmt->execute([':monthId' => $monthId, ':year' => $year]);
         $results = $stmt->fetchAll(2);
         $anwesen = [];
         foreach ($results as $result) {
-            $anwesen[]= new Anwesenheit($result["id"],$result['dozenten_id'],$result['teilnehmer_id'],$result['datum'],$result['status']);
+            $anwesen[] = new Anwesenheit($result["id"], $result['dozenten_id'], $result['teilnehmer_id'], $result['datum'], $result['status']);
         }
         return $anwesen;
 
     }
-
-
-
 
 }
