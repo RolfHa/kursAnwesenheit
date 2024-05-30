@@ -1,8 +1,4 @@
 <?php
-session_start();
-$_SESSION['userId'] = 3;
-$month = 5;
-$year = 2024;
 ?>
 <!doctype html>
 <html lang="en">
@@ -41,7 +37,7 @@ $year = 2024;
     <tr>
         <th><a href="index.php?action=previousMonth&month=<?php echo $month; ?>&year=<?php echo $year; ?>"><button><=</button></a> <?php echo $germanMonthName[$month - 1] . " $year"; ?> <a href="index.php?action=nextMonth&month=<?php echo $month; ?>&year=<?php echo $year; ?>"><button>=></button></a></th>
         <?php
-        for ($i = 0; $i < $letzterMonatsTag; $i++) {
+        for ($i = 0; $i < 31; $i++) {
             ?>
             <th><?php echo($i + 1); ?></th>
             <?php
@@ -55,18 +51,19 @@ $year = 2024;
         <input type="hidden" name="month" value="<?php echo $month; ?>">
         <input type="hidden" name="action" value="update">
         <!-- Ausgabe pro Teilnehmer -->
-        <?php for ($j = 1; $j < 31; $j++) {
+        <?php for ($j = 1; $j <= count($tns); $j++) {
             ?>
             <tr>
                 <!-- Teilnehmername ausgeben -->
-                <td style="width: 300px;">Peter Panne</td>
-                <input type="hidden" name="teilnehmerId[]" value="44">
+                <td style="width: 300px;"><?php echo $tns[$j-1]->getFullName() . ' : '; ?></td>
+                <input type="hidden" name="teilnehmerId[]" value="<?php echo $tns[$j-1]->getId(); ?>">
                 <?php
                 // Ausgabe aller Monatsdaten
-                for ($k = 0; $k < 31; $k++) {
+                for ($k = 0; $k < $letzterMonatsTag; $k++) {
                     ?>
                     <td>
                         <select name="day<?php echo $j; ?>[]" tabindex="<?php echo $j + 31 * $k; ?>">
+                            <option><?php echo $monthAnwesenheiten[($j-1) * $letzterMonatsTag + $k]->getStatus(); ?></option>
                             <option></option>
                             <option>x</option>
                             <option>o</option>

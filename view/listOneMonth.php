@@ -31,7 +31,7 @@
             for ($i = ($j - 1) * $letzterMonatsTag; $i < $letzterMonatsTag + ($j - 1) * $letzterMonatsTag; $i++) {
                 ?>
                 <td>
-                    <?php
+                    <?php // durch pulldown Menu ersetzen
                     echo $monthAnwesenheiten[$i]->getStatus();
                     ?>
                 </td>

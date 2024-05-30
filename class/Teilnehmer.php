@@ -40,6 +40,11 @@ class Teilnehmer extends User
 
     }
 
+    public function getId(): int
+    {
+        return $this->t_id;
+    }
+
     public static function findTeilById(int $id): Teilnehmer
     {
         $con = parent::dbcon();
