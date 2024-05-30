@@ -20,10 +20,15 @@ onclick: Monat vorwärts, bzw. Monat rückwärts wie onload, nur mit gewünschte
 gewünschter Monat muss im Bereich des Kurses liegen, muss beim Kursanlegen gespeichert werden
 
 submit: alle Daten aus input-text-Felder übertragen, einschl. Monat, Jahr, Kurs, Dozent
-validieren ob x, o, n oder Leerstring übertragen wurden, im Fehlerfall ansichtDozenten mit Fehlermeldung
+validieren ob x, o, n oder Leerstring übertragen wurden, im Fehlerfall ansichtDozenten mit Fehlermeldung**
 speichern: siehe Zeichnung im TagesChat
 im Fehlerfall Fehlermeldung ausgeben
 deim Funktionieren: Seite neu laden -> onload
 wird nicht programmiert: wenn mehrere User aktiv sind, wird unmittelbar jede Aktion den anderen User angezeigt
 
 
+**Erweiterung
+Sekretariat darf ue, kr, e, fe für Anwesenheit zusätzlich eintragen
+Es wird gespeichert, wer den Eintrag ändert (dozent_id), vorherige dozent_id wird überschreiben
+Wenn der Mitarbeiter im Sekrtariat eine Änderung durchführt, darf sie vom Dozenten überschrieben werden, zusätzlich
+darf der Dozent seine Änderung rückgängig machen

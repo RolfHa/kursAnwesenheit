@@ -1,6 +1,7 @@
 <?php
+
 $month = 5;
-$year = 2024
+$year = 2024;
 ?>
 <!doctype html>
 <html lang="en">
@@ -16,27 +17,29 @@ $year = 2024
             -moz-appearance: none;
             /* for Safari, Chrome, Opera */
             -webkit-appearance: none;
-            font-size: 20px;
+            font-size: 18px;
         }
 
         th {
             width: 20px;
         }
+
         table {
             border-collapse: collapse;
             float: left;
         }
 
+        tr:nth-child(even) {
+            background-color: #e2e2e2;
+        }
     </style>
 </head>
 <body>
-<form method="post" action="index.php">
 <table>
+    <thead>
     <tr>
         <th><a href="index.php?action=previousMonth&month=<?php echo $month; ?>&year=<?php echo $year; ?>">
-                <button><=</button>
-            </a>Mai<?php echo $year; ?> <a
-                    href="index.php?action=nextMonth&month=<?php echo $month; ?>&year=<?php echo $year; ?>">
+                <button><=</button></a> Mai <?php echo $year; ?> <a href="index.php?action=nextMonth&month=<?php echo $month; ?>&year=<?php echo $year; ?>">
                 <button>=></button>
             </a></th>
         <?php
@@ -47,34 +50,45 @@ $year = 2024
         }
         ?>
     </tr>
-    <!-- Ausgabe pro Teilnehmer -->
-    <?php for ($j = 1; $j < 31; $j++) {
-        ?>
-        <tr>
-            <!-- Teilnehmername ausgeben -->
-            <td style="width: 300px;">Peter Panne</td>
-            <?php
-            // Ausgabe aller Monatsdaten
-            for ($k = 0; $k < 31; $k++) {
-                ?>
-                <td>
-                    <select name="cars" id="cars" tabindex="<?php echo $j + 31 * $k; ?>">
-                        <option></option>
-                        <option>x</option>
-                        <option>o</option>
-                        <option>n</option>
-                    </select>
-                </td>
-                <?php
-            }
+    </thead>
+    <tbody>
+    <form method="post" action="index.php" id="form1">
+        <input type="hidden" name="year" value="<?php echo $year; ?>">
+        <input type="hidden" name="month" value="<?php echo $month; ?>">
+        <!-- Ausgabe pro Teilnehmer -->
+        <?php for ($j = 1; $j < 31; $j++) {
             ?>
-        </tr>
-        <?php
-    }
-    ?>
+            <tr>
+                <!-- Teilnehmername ausgeben -->
+                <td style="width: 300px;">Peter Panne</td>
+                <?php
+                // Ausgabe aller Monatsdaten
+                for ($k = 0; $k < 31; $k++) {
+                    ?>
+                    <td>
+                        <select name="presenceTn_id<?php echo $j; ?>[]" tabindex="<?php echo $j + 31 * $k; ?>">
+                            <option></option>
+                            <option>x</option>
+                            <option>o</option>
+                            <option>n</option>
+                            <option>fe</option>
+                            <option>kr</option>
+                        </select>
+                    </td>
+                    <?php
+                }
+                ?>
+            </tr>
+            <?php
+        }
+        ?>
+
+    </form>
+    </tbody>
 </table>
-    <div><input type="submit"></div>
-</form>
+<div><input type="submit" id="testing" name="testing" onclick="document.getElementById('form1').submit(this)"></div>
+
+
 </body>
 </html>
 
