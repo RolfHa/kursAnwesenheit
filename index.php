@@ -3,24 +3,27 @@ session_start();
 
 $dt = new DateTime();
 $action = $_REQUEST['action'] ?? ''; // REQUEST ist Kombi von GET und POST
-$year = $_GET['year'] ?? $dt->format('Y');
-$month = $_GET['month'] ?? $dt->format('m');
+$year = $_REQUEST['year'] ?? $dt->format('Y');
+$month = $_REQUEST['month'] ?? $dt->format('m');
 $teilnehmerIds = $_POST['teilnehmerIds'] ?? [];
 $days = $_POST['days'] ?? []; // 2-dim $days[0] ist Anwesenheitsstati vom 1. Teilnehmer
 
-$userId = $_SESSION['userId'] ?? 3;
+if (!isset($_SESSION['userId'])){
+    $_SESSION['userId'] = 3;
+}
+$userId = $_SESSION['userId'];
 
 $dtNew = DateTime::createFromFormat('Y-m-d', "$year-$month-1"); // Tag nötig, da 30. Feb beim Blättern Probleme macht
 
-echo '<pre>GET';
-print_r($_GET);
-echo '</pre>';
-echo '<pre>POST';
-print_r($_POST);
-echo '</pre>';
-echo '<pre>SESSION';
-print_r($_SESSION);
-echo '</pre>';
+//echo '<pre>GET';
+//print_r($_GET);
+//echo '</pre>';
+//echo '<pre>POST';
+//print_r($_POST);
+//echo '</pre>';
+//echo '<pre>SESSION';
+//print_r($_SESSION);
+//echo '</pre>';
 
 spl_autoload_register(function ($class) {
     include 'class/' . $class . '.php';
@@ -32,7 +35,8 @@ if ($action === 'nextMonth') {
     $dtNew->sub(new DateInterval('P1M'));
 } elseif ($action === 'update') {
     // Daten in Datenbank updaten
-    $tnAdb = new TeilnehmerAnwesenheiten(Teilnehmer::findTeilById($teilnehmerIds[0]), Anwesenheit::findByMonthTId($teilnehmerIds[0]));
+    $tnAdb = new TeilnehmerAnwesenheiten(Teilnehmer::findTeilById($teilnehmerIds[0]), Anwesenheit::findByMonthTId($teilnehmerIds[0], $month, $year));
+    $tnAdb->updateTeilnehmerForOneMonth($days[$teilnehmerIds[0]]);
     echo '<pre>';
     print_r($tnAdb);
     echo '</pre>';

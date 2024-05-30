@@ -28,6 +28,30 @@ class Anwesenheit
         $this->status = $status;
     }
 
+    public function setDozentenId(int $dozenten_id): void
+    {
+        $this->dozenten_id = $dozenten_id;
+    }
+
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
+        $this->update();
+    }
+    private function update()
+    {
+        $con = self::dbcon();
+        $sql = "UPDATE anwesenheit SET dozenten_id = :dozenten_id, 
+                       status = :status WHERE id=:id";
+        $stmt = $con->prepare($sql);
+        try {
+            $stmt->execute([':dozenten_id' => $this->dozenten_id,  ':status' => $this->status, 'id' => $this->id]);
+            return self::findById($con->lastInsertId());
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage() . '<br>Datei: ' . $e->getFile() . '<br>Zeile: ' . $e->getLine() . '<br>Trace: ' . $e->getTraceAsString());
+
+        }
+    }
     /**
      * @return PDO|null
      * @throws Exception

@@ -62,7 +62,7 @@
                 for ($k = 0; $k < $letzterMonatsTag; $k++) {
                     ?>
                     <td>
-                        <select name="days[<?php echo $j - 1;?>][]" tabindex="<?php echo $j + 31 * $k; ?>">
+                        <select name="days[<?php echo $tns[$j-1]->getId(); ?>][]" tabindex="<?php echo $j + 31 * $k; ?>">
                             <option><?php echo $monthAnwesenheiten[($j-1) * $letzterMonatsTag + $k]->getStatus(); ?></option>
                             <option></option>
                             <option>x</option>
